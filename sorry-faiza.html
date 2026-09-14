@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorry & Happy Birthday, Faiza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Kanit", sans-serif;
+        background: #0c0c0c;
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #ff9a8b, #ff6a88, #ff99ac);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .glow-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+      }
+      .float {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+      .heart {
+        animation: beat 1.4s ease-in-out infinite;
+      }
+      @keyframes beat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
+      .fade-in {
+        animation: fadeIn 1s ease forwards;
+        opacity: 0;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        from {
+          transform: translateY(20px);
+        }
+      }
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+      .delay-4 {
+        animation-delay: 0.8s;
+      }
+      .delay-5 {
+        animation-delay: 1s;
+      }
+      .pulse-num {
+        animation: pulseNum 1s ease-in-out infinite;
+      }
+      @keyframes pulseNum {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.06);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-white min-h-screen overflow-x-hidden">
+    <!-- Background glow accents -->
+    <div
+      class="fixed top-[-10%] left-[-10%] w-60 h-60 sm:w-96 sm:h-96 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"
+    ></div>
+    <div
+      class="fixed bottom-[-10%] right-[-10%] w-60 h-60 sm:w-96 sm:h-96 bg-rose-400/10 rounded-full blur-3xl pointer-events-none"
+    ></div>
+
+    <main
+      class="relative max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col items-center text-center gap-8 sm:gap-10"
+    >
+      <!-- Hero -->
+      <section class="fade-in">
+        <div class="text-4xl sm:text-5xl mb-4 float">💌</div>
+        <h1 class="text-4xl sm:text-5xl font-semibold gradient-text mb-3">
+          I'm Sorry, Faiza
+        </h1>
+        <p class="text-white/60 text-sm sm:text-base">
+          A small website, because "sorry" felt too small to just say.
+        </p>
+        <div
+          class="mt-6 inline-flex items-center gap-2 glow-card rounded-full px-5 py-2 text-sm text-white/80"
+        >
+          <span class="text-lg">🎂</span> And guess what... it's almost your
+          birthday!
+        </div>
+      </section>
+
+      <!-- Countdown -->
+      <section class="fade-in delay-1 w-full">
+        <h2 class="text-xl font-medium gradient-text mb-4">
+          Countdown to your birthday 🎈
+        </h2>
+        <div
+          id="countdown-wrap"
+          class="glow-card rounded-2xl p-6 sm:p-8 w-full"
+        >
+          <div id="countdown-grid" class="grid grid-cols-4 gap-2 sm:gap-4">
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-days"
+                class="text-3xl sm:text-4xl font-semibold gradient-text pulse-num"
+                >00</span
+              >
+              <span
+                class="text-[11px] sm:text-xs text-white/50 mt-1 uppercase tracking-wide"
+                >Days</span
+              >
+            </div>
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-hours"
+                class="text-3xl sm:text-4xl font-semibold gradient-text pulse-num"
+                >00</span
+              >
+              <span
+                class="text-[11px] sm:text-xs text-white/50 mt-1 uppercase tracking-wide"
+                >Hours</span
+              >
+            </div>
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-mins"
+                class="text-3xl sm:text-4xl font-semibold gradient-text pulse-num"
+                >00</span
+              >
+              <span
+                class="text-[11px] sm:text-xs text-white/50 mt-1 uppercase tracking-wide"
+                >Mins</span
+              >
+            </div>
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-secs"
+                class="text-3xl sm:text-4xl font-semibold gradient-text pulse-num"
+                >00</span
+              >
+              <span
+                class="text-[11px] sm:text-xs text-white/50 mt-1 uppercase tracking-wide"
+                >Secs</span
+              >
+            </div>
+          </div>
+          <p id="cd-message" class="hidden text-lg text-white/90 mt-2">
+            🎉 It's your birthday! Happy Birthday, Faiza! 🎂
+          </p>
+        </div>
+      </section>
+
+      <!-- Message card -->
+      <section
+        class="glow-card fade-in delay-2 rounded-2xl p-6 sm:p-10 w-full text-left"
+      >
+        <h2 class="text-xl font-medium gradient-text mb-4">What happened</h2>
+        <p class="text-white/80 leading-relaxed mb-4">
+          Yesterday you called me — more than once — and I didn't pick up. I
+          know it looked like I was ignoring you, and I know that hurt. That
+          wasn't my intention at all, and I completely understand why you're
+          upset with me.
+        </p>
+        <p class="text-white/80 leading-relaxed">
+          You're one of my closest friends, and the last thing I want is for you
+          to feel unimportant to me. So I made this page to say it properly:
+          <span class="gradient-text font-medium">I'm really sorry.</span>
+        </p>
+      </section>
+
+      <!-- Image gallery section -->
+      <section class="fade-in delay-3 w-full">
+        <h2 class="text-xl font-medium gradient-text mb-4">
+          A few memories 🤍
+        </h2>
+        <div class="grid grid-cols-2 gap-3 sm:gap-4">
+          <div
+            class="glow-card rounded-2xl p-2 aspect-square flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="pic1.jpg"
+              alt="Memory 1"
+              class="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+          <div
+            class="glow-card rounded-2xl p-2 aspect-square flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="pic2.jpg"
+              alt="Memory 2"
+              class="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+          <div
+            class="glow-card rounded-2xl p-2 aspect-square flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="pic3.jpg"
+              alt="Memory 3"
+              class="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+          <div
+            class="glow-card rounded-2xl p-2 aspect-square flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="pic4.jpg"
+              alt="Memory 4"
+              class="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+        </div>
+        <p class="text-white/40 text-xs mt-3">
+          These are pic1–pic4.jpg in the same folder — swap the files anytime to
+          update the photos, keeping the same names.
+        </p>
+      </section>
+
+      <!-- Promise -->
+      <section
+        class="glow-card fade-in delay-4 rounded-2xl p-6 sm:p-10 w-full text-left"
+      >
+        <h2 class="text-xl font-medium gradient-text mb-4">I promise</h2>
+        <ul class="space-y-3 text-white/80">
+          <li class="flex gap-3">
+            <span class="gradient-text">✦</span> I'll always pick up when I can,
+            and explain when I can't.
+          </li>
+          <li class="flex gap-3">
+            <span class="gradient-text">✦</span> Our friendship matters to me
+            more than any excuse.
+          </li>
+          <li class="flex gap-3">
+            <span class="gradient-text">✦</span> I'll do better at showing up
+            for you.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Birthday section -->
+      <section
+        class="glow-card fade-in delay-5 rounded-2xl p-6 sm:p-10 w-full text-left relative overflow-hidden"
+      >
+        <div class="text-4xl mb-3">🎉🎂🎈</div>
+        <h2 class="text-2xl font-semibold gradient-text mb-3">
+          Happy Birthday, Faiza!
+        </h2>
+        <p class="text-white/80 leading-relaxed">
+          Before anything else — I hope your day is exactly as amazing as you
+          are. Sorry for yesterday, but tomorrow isn't about that. It's your
+          day, and I want to spend it making you smile instead of mad at me.
+          Here's to another year of you being one of the best people I know. 🎁
+        </p>
+      </section>
+
+      <!-- Closing -->
+      <section class="fade-in delay-5 flex flex-col items-center gap-4 pt-4">
+        <div class="text-3xl heart">🤍</div>
+        <p class="text-white/70">
+          Forgive me, and happy birthday in advance, চন্দ্রাবলী?
+        </p>
+        <a
+          href="tel:01405819175"
+          class="px-8 py-3 rounded-full bg-white text-black font-medium hover:scale-105 transition-transform"
+        >
+          Call Me Back 📞
+        </a>
+      </section>
+    </main>
+
+    <script>
+      // Countdown target: 16 September, local time
+      function getTarget() {
+        const now = new Date();
+        let target = new Date(now.getFullYear(), 8, 16, 0, 0, 0); // month 8 = September
+        if (target < now) {
+          target = new Date(now.getFullYear() + 1, 8, 16, 0, 0, 0);
+        }
+        return target;
+      }
+
+      const target = getTarget();
+      const daysEl = document.getElementById("cd-days");
+      const hoursEl = document.getElementById("cd-hours");
+      const minsEl = document.getElementById("cd-mins");
+      const secsEl = document.getElementById("cd-secs");
+      const gridEl = document.getElementById("countdown-grid");
+      const msgEl = document.getElementById("cd-message");
+
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+
+      function tick() {
+        const now = new Date();
+        const diff = target - now;
+
+        if (diff <= 0) {
+          gridEl.classList.add("hidden");
+          msgEl.classList.remove("hidden");
+          clearInterval(timer);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        daysEl.textContent = pad(days);
+        hoursEl.textContent = pad(hours);
+        minsEl.textContent = pad(mins);
+        secsEl.textContent = pad(secs);
+      }
+
+      tick();
+      const timer = setInterval(tick, 1000);
+    </script>
+  </body>
+</html>
