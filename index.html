@@ -90,6 +90,81 @@
           transform: scale(1.06);
         }
       }
+
+      /* Birthday reveal animation */
+      .bday-pop {
+        animation: bdayPop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes bdayPop {
+        0% {
+          transform: scale(0.3) rotate(-8deg);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.1) rotate(3deg);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+      .bday-glow-text {
+        background: linear-gradient(90deg, #ffd76a, #ff9a8b, #ff6a88, #ffd76a);
+        background-size: 300% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shine 3s linear infinite;
+      }
+      @keyframes shine {
+        to {
+          background-position: 300% center;
+        }
+      }
+
+      /* Quiz */
+      .quiz-option {
+        transition: all 0.15s ease;
+        cursor: pointer;
+      }
+      .quiz-option:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      .quiz-option.selected {
+        border-color: #ff6a88;
+        background: rgba(255, 106, 136, 0.12);
+      }
+      .quiz-option.correct {
+        border-color: #7ee787 !important;
+        background: rgba(126, 231, 135, 0.12) !important;
+      }
+      .quiz-option.incorrect {
+        border-color: #ff7b7b !important;
+        background: rgba(255, 123, 123, 0.12) !important;
+      }
+
+      /* Modal */
+      #letter-modal {
+        transition: opacity 0.25s ease;
+      }
+      #letter-modal.hidden-modal {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #letter-modal .modal-box {
+        transition:
+          transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.3s ease;
+      }
+      #letter-modal.hidden-modal .modal-box {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+      }
+      .letter-text {
+        font-family: "Noto Sans Bengali", "Kanit", sans-serif;
+        white-space: pre-line;
+      }
     </style>
   </head>
   <body class="text-white min-h-screen overflow-x-hidden">
@@ -121,16 +196,21 @@
         </div>
       </section>
 
-      <!-- Countdown -->
+      <!-- Birthday / Countdown spot -->
       <section class="fade-in delay-1 w-full">
-        <h2 class="text-xl font-medium gradient-text mb-4">
+        <h2
+          id="countdown-heading"
+          class="text-xl font-medium gradient-text mb-4"
+        >
           Countdown to your birthday 🎈
         </h2>
         <div
-          id="countdown-wrap"
-          class="glow-card rounded-2xl p-6 sm:p-8 w-full"
+          class="glow-card rounded-2xl p-6 sm:p-8 w-full relative overflow-hidden"
         >
-          <div id="countdown-grid" class="grid grid-cols-4 gap-2 sm:gap-4">
+          <div
+            id="countdown-grid"
+            class="grid grid-cols-4 gap-2 sm:gap-4 relative z-10"
+          >
             <div class="flex flex-col items-center">
               <span
                 id="cd-days"
@@ -176,9 +256,47 @@
               >
             </div>
           </div>
-          <p id="cd-message" class="hidden text-lg text-white/90 mt-2">
-            🎉 It's your birthday! Happy Birthday, Faiza! 🎂
-          </p>
+
+          <div
+            id="bday-reveal"
+            class="hidden relative z-10 flex flex-col items-center gap-2 py-4"
+          >
+            <div class="text-5xl">🎉🎂🎈</div>
+            <h3 class="text-3xl sm:text-4xl font-bold gradient-text">
+              Happy Birthday, Faiza!
+            </h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz section -->
+      <section id="quiz-section" class="hidden fade-in delay-2 w-full">
+        <h2 class="text-xl font-medium gradient-text mb-2">
+          One more thing before you go... 🎁
+        </h2>
+        <p class="text-white/50 text-xs mb-4">
+          Answer all 5 questions correctly to unlock a little something I wrote
+          for you.
+        </p>
+
+        <div
+          id="quiz-wrap"
+          class="glow-card rounded-2xl p-6 sm:p-8 w-full text-left space-y-6"
+        >
+          <!-- Questions are generated here by JS from the QUIZ config below -->
+        </div>
+
+        <div class="flex flex-col items-center gap-3 mt-5">
+          <button
+            id="quiz-submit"
+            class="px-8 py-3 rounded-full bg-white text-black font-medium hover:scale-105 transition-transform"
+          >
+            Check My Answers
+          </button>
+          <p
+            id="quiz-feedback"
+            class="text-sm text-white/60 min-h-[1.25rem]"
+          ></p>
         </div>
       </section>
 
@@ -243,6 +361,10 @@
             />
           </div>
         </div>
+        <p class="text-white/40 text-xs mt-3">
+          These are pic1–pic4.jpg in the same folder — swap the files anytime to
+          update the photos, keeping the same names.
+        </p>
       </section>
 
       <!-- Promise -->
@@ -297,53 +419,238 @@
       </section>
     </main>
 
+    <!-- Letter Modal -->
+    <div
+      id="letter-modal"
+      class="hidden-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+    >
+      <div
+        class="modal-box glow-card rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative text-left"
+      >
+        <button
+          id="modal-close"
+          class="absolute top-4 right-4 text-white/50 hover:text-white text-xl leading-none"
+        >
+          ✕
+        </button>
+        <div class="text-3xl mb-3 text-center">💌</div>
+        <h3 class="text-xl font-medium gradient-text mb-5 text-center">
+          For you, চন্দ্রাবলী
+        </h3>
+        <div
+          class="letter-text text-white/85 leading-relaxed space-y-4 text-[15px]"
+        >
+          <p>
+            বার্থডে তে উইস করা লাগে। কত চিন্তা করছি যে কিভাবে করবো কিছুই বুঝতেছি
+            না। ভাবলাম মনে যা আছে বলি তাই একটা ভিডিও বানাইলাম বানানোর পরে একবার
+            দেখলাম মনে হলো ১০০% ঠিক আছে তার পরের বার দেখে মনে হল ৭০% এর পর
+            ৫০,২০,০ এখন তো মনে হচ্ছে কি বা*ল বানাইলাম। তাই আর এইটা দিবো না। আপনি
+            আমার কাছে কেমন সেটা বলার মতো না। লাস্ট কয়েক দিনে খাত গানটা ১০০ বার
+            শুনেছি কম পক্ষে। এমন না যে অনেক ভালো লাগছে তাই শুনেছি। খারাপ ও না৷
+            এখন শুনতে শুনতে ভালোই লাগছে। মানে আপনার সব কিছুই আমার ভালো লাগে যেটা
+            ভালো না লাগার কথা সেটাও আস্তে আস্তে ভালো লেগেই যায়। আমার মনের ভেতরে
+            এখনো হাজার টা কথা আছে বলার মতো যেগুলা হয়তো বলা হবে না বা সেই সময়
+            সুযোগ নেই। কিন্তু এইটা সত্যি আপনি আসলেই একজন স্পেশাল মানুষ আমার
+            লাইফে। হ্যা একটু বাচ্চা,একটু পাগল, অনেক কালা কিন্তু সব থেকে সুন্দর।
+            হয়তো প্রতিদিন কথা হয় না বা হবেও না এইটাই নরমাল কিন্তু আপনার সাথে
+            যখনই দেখা হয় বা কথা হয় অনেক বেশি আপন মনে হয়। সেদিন ecb তে বসে
+            ফোনে স্ক্রিনশট দেখছিলেন সেগুলা মধ্য আমার কিছু ইচ্ছে ছিলো আর কি।
+            যেগুলা পুরন হলে আপনাকে দেখাতাম যে এইটা একদিন চেয়েছিলাম আজকে পুরন
+            হলো। সেই সুযোগ আর আসবে না তাই ডিলিট করে দিছিলাম আর কি.
+          </p>
+          <p>
+            আসলে কিছু দিন আগেই লিখতেছি ম্যসেজ টা। অনেক আলতু ফালতু কথা লিখেছি
+            যেটা লিখা ঠিক হয় নি কিন্তু আমার মনে যা আসতেছে তাই লিখতেছি। যদি এইটা
+            পরিক্ষায় প্রশ্ন হতো যে "ফাইজার বার্থডে তাকে উইস করে ম্যসেজ লিখ" তবে
+            ০ দিতো আমারে।
+          </p>
+          <p>
+            ভিডিও করে বার বার দেখে ভালো লাগে নাই তাই আর দিচ্ছি না তাই এইটা লিখার
+            পরে আর পড়বো না। যা লিখেছি তাই, ভালো লাগলে thanks to me আর না হলে
+            F*fjs off.
+          </p>
+          <p>
+            আপনাকে আপনার জন্মদিনের শুভেচ্ছা চন্দ্রাবলী। জীবনের শেষ এর দিকে দেখা
+            হবে আর তখন আমি বলবো হ্যালো বাচ্চা মেয়ে আর আপনি বলবেন হ্যা চুল পাকা
+            বাচ্চা মেয়ে। ♥️
+          </p>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // Countdown target: 16 September, local time
-      function getTarget() {
-        const now = new Date();
-        let target = new Date(now.getFullYear(), 8, 16, 0, 0, 0); // month 8 = September
-        if (target < now) {
-          target = new Date(now.getFullYear() + 1, 8, 16, 0, 0, 0);
-        }
-        return target;
-      }
+      /* ============ BIRTHDAY CHECK / COUNTDOWN ============ */
+      // Change this to 16 before production
+      const BIRTHDAY_DAY = 16;
 
-      const target = getTarget();
-      const daysEl = document.getElementById("cd-days");
-      const hoursEl = document.getElementById("cd-hours");
-      const minsEl = document.getElementById("cd-mins");
-      const secsEl = document.getElementById("cd-secs");
+      const now0 = new Date();
+      const isBirthdayToday =
+        now0.getMonth() === 8 && now0.getDate() === BIRTHDAY_DAY; // September
+
       const gridEl = document.getElementById("countdown-grid");
-      const msgEl = document.getElementById("cd-message");
+      const revealEl = document.getElementById("bday-reveal");
+      const headingEl = document.getElementById("countdown-heading");
 
-      function pad(n) {
-        return String(n).padStart(2, "0");
+      const quizSection = document.getElementById("quiz-section");
+
+      function unlockBirthday() {
+        gridEl.classList.add("hidden");
+        headingEl.textContent = "It's her birthday! 🎊";
+        revealEl.classList.remove("hidden");
+        quizSection.classList.remove("hidden");
       }
 
-      function tick() {
-        const now = new Date();
-        const diff = target - now;
+      if (isBirthdayToday) {
+        unlockBirthday();
+      } else {
+        function getTarget() {
+          const now = new Date();
+          let target = new Date(now.getFullYear(), 8, BIRTHDAY_DAY, 0, 0, 0);
+          if (target < now)
+            target = new Date(now.getFullYear() + 1, 8, BIRTHDAY_DAY, 0, 0, 0);
+          return target;
+        }
 
-        if (diff <= 0) {
-          gridEl.classList.add("hidden");
-          msgEl.classList.remove("hidden");
-          clearInterval(timer);
+        const target = getTarget();
+        const daysEl = document.getElementById("cd-days");
+        const hoursEl = document.getElementById("cd-hours");
+        const minsEl = document.getElementById("cd-mins");
+        const secsEl = document.getElementById("cd-secs");
+
+        function pad(n) {
+          return String(n).padStart(2, "0");
+        }
+
+        function tick() {
+          const current = new Date();
+          const diff = target - current;
+
+          if (diff <= 0) {
+            unlockBirthday();
+            clearInterval(timer);
+            return;
+          }
+
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const mins = Math.floor((diff / (1000 * 60)) % 60);
+          const secs = Math.floor((diff / 1000) % 60);
+
+          daysEl.textContent = pad(days);
+          hoursEl.textContent = pad(hours);
+          minsEl.textContent = pad(mins);
+          secsEl.textContent = pad(secs);
+        }
+
+        tick();
+        const timer = setInterval(tick, 1000);
+      }
+
+      /* ============ QUIZ ============ */
+      // Edit the questions/options/correct index below to personalize.
+      // "correct" is the 0-based index of the right option.
+      const QUIZ = [
+        {
+          q: "1. What date did I send you my first ever message?",
+          options: ["14th February", "28th February", "8th March"],
+          correct: 1,
+        },
+        {
+          q: "2. What color shirt was I wearing at our first meeting, when you wore a black saree?",
+          options: ["Black", "White", "Blue"],
+          correct: 1,
+        },
+        {
+          q: "3. How many white roses did I give you at our 2nd meeting?",
+          options: ["3", "5", "7"],
+          correct: 1,
+        },
+        {
+          q: "4. Who gave the first gift to the other?",
+          options: ["I did", "You did"],
+          correct: 1,
+        },
+        {
+          q: "5. The very first day we talked, what did I compliment you on?",
+          options: ["Your hair", "Your eyes", "Your way of talking"],
+          correct: 1,
+        },
+      ];
+
+      const quizWrap = document.getElementById("quiz-wrap");
+      const answers = new Array(QUIZ.length).fill(null);
+
+      QUIZ.forEach((item, qIndex) => {
+        const qBlock = document.createElement("div");
+        qBlock.innerHTML = `
+          <p class="text-white/90 font-medium mb-3">${item.q}</p>
+          <div class="space-y-2" data-q="${qIndex}">
+            ${item.options
+              .map(
+                (opt, oIndex) => `
+              <div class="quiz-option glow-card rounded-xl px-4 py-3 border border-white/10 text-white/80 text-sm" data-q="${qIndex}" data-o="${oIndex}">
+                ${opt}
+              </div>`,
+              )
+              .join("")}
+          </div>
+        `;
+        quizWrap.appendChild(qBlock);
+      });
+
+      quizWrap.addEventListener("click", (e) => {
+        const opt = e.target.closest(".quiz-option");
+        if (!opt) return;
+        const qIndex = Number(opt.dataset.q);
+        const oIndex = Number(opt.dataset.o);
+        answers[qIndex] = oIndex;
+
+        document
+          .querySelectorAll(`.quiz-option[data-q="${qIndex}"]`)
+          .forEach((el) => el.classList.remove("selected"));
+        opt.classList.add("selected");
+      });
+
+      const feedbackEl = document.getElementById("quiz-feedback");
+
+      document.getElementById("quiz-submit").addEventListener("click", () => {
+        if (answers.includes(null)) {
+          feedbackEl.textContent = "Please answer every question first 🙂";
           return;
         }
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / (1000 * 60)) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
+        let correctCount = 0;
+        QUIZ.forEach((item, qIndex) => {
+          const options = document.querySelectorAll(
+            `.quiz-option[data-q="${qIndex}"]`,
+          );
+          options.forEach((el, oIndex) => {
+            el.classList.remove("correct", "incorrect");
+            if (oIndex === item.correct) el.classList.add("correct");
+            else if (oIndex === answers[qIndex]) el.classList.add("incorrect");
+          });
+          if (answers[qIndex] === item.correct) correctCount++;
+        });
 
-        daysEl.textContent = pad(days);
-        hoursEl.textContent = pad(hours);
-        minsEl.textContent = pad(mins);
-        secsEl.textContent = pad(secs);
+        if (correctCount === QUIZ.length) {
+          feedbackEl.textContent = "All correct! Opening your surprise... 🎁";
+          setTimeout(openLetter, 700);
+        } else {
+          feedbackEl.textContent = `${correctCount}/${QUIZ.length} correct — try again!`;
+        }
+      });
+
+      /* ============ MODAL ============ */
+      const modal = document.getElementById("letter-modal");
+      function openLetter() {
+        modal.classList.remove("hidden-modal");
       }
-
-      tick();
-      const timer = setInterval(tick, 1000);
+      document.getElementById("modal-close").addEventListener("click", () => {
+        modal.classList.add("hidden-modal");
+      });
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.add("hidden-modal");
+      });
     </script>
   </body>
 </html>
